@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alarm Clock PWA</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
-  <script src="script.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alarme PWA</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <div id="clock"></div>
-  <div>
-    <h2>Programar Alarme</h2>
-    <input type="time" id="alarmTime" required>
-    <textarea id="alarmMessage" placeholder="Mensagem do alarme..."></textarea>
-    <button id="setAlarm">Definir Alarme</button>
-  </div>
-  <div>
-    <h3>Alarmes Programados</h3>
-    <ul id="alarmsList"></ul>
-  </div>
-  <div id="alarmPopup" class="hidden">
-    <div id="popupMessage"></div>
-    <button id="stopAlarm">Parar</button>
-  </div>
+    <div id="clock">
+        <h1 id="time">00:00:00</h1>
+    </div>
+    <div id="alarms">
+        <h2>Programar Alarme</h2>
+        <input type="time" id="alarm-time" required>
+        <textarea id="alarm-message" placeholder="Mensagem do Alarme" required></textarea>
+        <button id="set-alarm">Configurar Alarme</button>
+        <ul id="alarm-list"></ul>
+    </div>
+    <div id="alarm-message-popup" style="display:none;">
+        <h2 id="alarm-message-text"></h2>
+        <button id="stop-alarm">Parar</button>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
