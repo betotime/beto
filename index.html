@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alarme Persistente</title>
+    <title>Alarme</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Alarme Persistente</h1>
+    <div id="app">
+        <h1>Relógio</h1>
         <div id="clock"></div>
-        <div class="form">
-            <input type="time" id="alarm-time" placeholder="Hora do Alarme">
-            <input type="text" id="alarm-message" placeholder="Mensagem do Alarme">
-            <button onclick="addAlarm()">Adicionar Alarme</button>
-        </div>
+
+        <h2>Configurar Alarme</h2>
+        <input type="time" id="alarm-time" required>
+        <input type="text" id="alarm-message" placeholder="Mensagem do alarme" required>
+        <button onclick="addAlarm()">Adicionar Alarme</button>
+
+        <h2>Lista de Alarmes</h2>
         <div id="alarm-list"></div>
     </div>
     <script src="script.js"></script>

@@ -9,6 +9,7 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("notificationclick", (event) => {
+  console.log("Notificação clicada:", event.notification);
   event.notification.close();
   event.waitUntil(
       clients.matchAll({ type: "window" }).then((clientList) => {
