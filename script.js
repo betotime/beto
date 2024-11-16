@@ -1,105 +1,94 @@
-// Variáveis globais
-const alarmSound = new Audio('sound.mp3');
-let alarms = [];
-
-// Carregar alarmes do localStorage
-window.onload = function() {
-    if (localStorage.getItem('alarms')) {
-        alarms = JSON.parse(localStorage.getItem('alarms'));
-        renderAlarms();
-    }
-    startClock();
+// Registra o Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then((registration) => {
+        console.log('Service Worker registrado com sucesso:', registration);
+      })
+      .catch((error) => {
+        console.log('Falha ao registrar o Service Worker:', error);
+      });
+  });
 }
-
-// Atualiza o relógio em tempo real
-function startClock() {
-    setInterval(() => {
-        const now = new Date();
-        const time = now.toLocaleTimeString();
-        document.getElementById('time').textContent = time;
-    }, 1000);
-}
-
-// Função para adicionar um alarme
-function addAlarm() {
-    const alarmTime = document.getElementById('alarm-time').value;
-    const alarmMessage = document.getElementById('alarm-message').value;
-
-    if (alarmTime && alarmMessage) {
-        const alarm = {
-            time: alarmTime,
-            message: alarmMessage,
-            id: Date.now()
-        };
-
-        alarms.push(alarm);
-        saveAlarms();
-        renderAlarms();
-    }
-}
-
-// Salva alarmes no localStorage
-function saveAlarms() {
-    localStorage.setItem('alarms', JSON.stringify(alarms));
-}
-
-// Renderiza a lista de alarmes na tela
-function renderAlarms() {
-    const alarmList = document.getElementById('alarm-list');
-    alarmList.innerHTML = '';
-
-    alarms.forEach(alarm => {
-        const alarmItem = document.createElement('li');
-        alarmItem.innerHTML = `${alarm.time} - ${alarm.message} <button onclick="deleteAlarm(${alarm.id})">Excluir</button>`;
-        alarmList.appendChild(alarmItem);
-
-        checkAlarm(alarm);
-    });
-}
-
-// Função para excluir um alarme
-function deleteAlarm(alarmId) {
-    alarms = alarms.filter(alarm => alarm.id !== alarmId);
-    saveAlarms();
-    renderAlarms();
-}
-
-// Verifica se algum alarme deve ser acionado
-function checkAlarm(alarm) {
-    const now = new Date();
-    const [hours, minutes] = alarm.time.split(':').map(num => parseInt(num, 10));
-    const alarmTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
-
-    if (now >= alarmTime && now < alarmTime.getTime() + 60000) { // O alarme toca dentro de 1 minuto após o horário
-        triggerAlarm(alarm);
-    }
-}
-
-// Função que dispara o alarme
-function triggerAlarm(alarm) {
-    // Toca o som do alarme
-    alarmSound.play();
-
-    // Cria uma notificação
-    if (Notification.permission === "granted") {
-        new Notification("Alarme", {
-            body: alarm.message,
-            icon: "icon.png"
-        });
-    }
-
-    // Exibe a mensagem do alarme em tela cheia
-    document.getElementById('alarm-message-popup').style.display = 'flex';
-    document.getElementById('alarm-message-text').textContent = alarm.message;
-}
-
-// Botão para parar o alarme
-document.getElementById('stop-alarm').onclick = function() {
-    alarmSound.pause();
-    document.getElementById('alarm-message-popup').style.display = 'none';
-};
 
 // Solicita permissão para notificações
 if (Notification.permission !== "granted") {
-    Notification.requestPermission();
+  Notification.requestPermission().then(permission => {
+    if (permission === "granted") {
+      console.log("Permissão para notificações concedida!");
+    } else {
+      console.log("Permissão para notificações negada.");
+    }
+  });
 }
+
+// Função para mostrar o relógio em tempo real
+function updateClock() {
+  const timeElement = document.getElementById("time");
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+}
+setInterval(updateClock, 1000);
+
+// Função para exibir e esconder o popup do alarme
+function showAlarmPopup(message) {
+  const popup = document.getElementById('alarm-message-popup');
+  const messageText = document.getElementById('alarm-message-text');
+  messageText.textContent = message;
+  popup.style.display = 'flex';
+
+  // Toca o som
+  const audio = new Audio('sound.mp3');
+  audio.play();
+
+  // Ação do botão "Parar"
+  document.getElementById('stop-alarm').onclick = () => {
+    audio.pause();
+    popup.style.display = 'none';
+  };
+}
+
+// Função para agendar o alarme
+let alarmTimeouts = [];
+function scheduleAlarm() {
+  const time = document.getElementById('alarm-time').value;
+  const message = document.getElementById('alarm-message').value;
+  if (!time || !message) return;
+
+  const [hour, minute] = time.split(":").map(Number);
+  const alarmTime = new Date();
+  alarmTime.setHours(hour, minute, 0, 0);
+
+  const timeDifference = alarmTime - new Date();
+  if (timeDifference > 0) {
+    const timeout = setTimeout(() => {
+      showAlarmPopup(message);
+      if (navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({
+          action: 'triggerAlarm',
+          message: message
+        });
+      }
+    }, timeDifference);
+    alarmTimeouts.push(timeout);
+  }
+
+  // Exibe o alarme na lista
+  const alarmList = document.getElementById('alarm-list');
+  const alarmItem = document.createElement('li');
+  alarmItem.textContent = `${time} - ${message}`;
+  const deleteButton = document.createElement('button');
+  deleteButton.textContent = 'Excluir';
+  deleteButton.onclick = () => {
+    clearTimeout(timeout);
+    alarmList.removeChild(alarmItem);
+  };
+  alarmItem.appendChild(deleteButton);
+  alarmList.appendChild(alarmItem);
+}
+
+// Lida com a configuração do alarme
+document.getElementById('set-alarm').onclick = scheduleAlarm;
