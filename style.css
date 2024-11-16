@@ -1,121 +1,61 @@
-/* Estilo global */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  h1 {
     text-align: center;
-    color: #333;
+    padding: 20px;
   }
   
-  /* Estilo do alarme */
-  #alarme {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  #clock {
+    font-size: 2rem;
     margin-bottom: 20px;
   }
   
-  /* Estilo do botão de agendar */
-  button {
-    background-color: #4CAF50;
+  #alarmPopup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
     color: white;
-    padding: 10px 20px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  button {
+    background-color: #2196F3;
+    color: white;
     border: none;
-    border-radius: 5px;
+    padding: 10px 20px;
     cursor: pointer;
-    width: 100%;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
   }
   
   button:hover {
-    background-color: #45a049;
+    background-color: #1976D2;
   }
   
-  /* Layout do alarme agendado */
-  #alarmes-agendados {
-    margin-top: 30px;
+  textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
   }
   
-  .alarmes-agendados-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  #alarmsList {
+    list-style: none;
+    padding: 0;
+  }
+  
+  #alarmsList li {
     margin-bottom: 10px;
   }
   
-  .excluir {
-    background-color: #f44336;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    color: white;
-    border: none;
-  }
-  
-  /* Responsividade */
-  @media (max-width: 768px) {
-    /* Ajuste para telas menores */
-    .container {
-      padding: 15px;
-    }
-  
-    h1 {
-      font-size: 24px;
-    }
-  
-    button {
-      font-size: 14px;
-    }
-  
-    #alarme {
-      padding: 15px;
-    }
-  
-    .alarmes-agendados-item {
-      flex-direction: column;
-      text-align: center;
-    }
-  
-    .excluir {
-      margin-top: 10px;
-      width: 100%;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    /* Ajuste para dispositivos móveis */
-    h1 {
-      font-size: 20px;
-    }
-  
-    #alarme {
-      padding: 10px;
-    }
-  
-    button {
-      font-size: 12px;
-      padding: 8px;
-    }
-  
-    .alarmes-agendados-item {
-      padding: 10px;
-    }
+  #alarmsList button {
+    margin-left: 10px;
+    background-color: red;
   }
   
