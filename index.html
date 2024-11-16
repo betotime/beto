@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alarme</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Configuração de Alarme</h1>
+
+    <!-- Exibição do relógio atual -->
+    <div id="currentTime" class="clock"></div>
+
+    <!-- Formulário para configurar o alarme -->
+    <div class="alarm-form">
+        <label for="alarmMessageInput">Mensagem do Alarme:</label>
+        <input type="text" id="alarmMessageInput" placeholder="Digite a mensagem do alarme">
+
+        <label for="alarmTimeInput">Hora do Alarme:</label>
+        <input type="time" id="alarmTimeInput">
+
+        <button onclick="setAlarm()">Configurar Alarme</button>
+    </div>
+
+    <!-- Exibição dos alarmes configurados -->
+    <div id="scheduledAlarms">
+        <h2>Alarmes Configurados:</h2>
+        <ul id="alarmList"></ul>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
