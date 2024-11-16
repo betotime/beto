@@ -1,150 +1,121 @@
-/* Estilos Gerais */
+/* Estilo global */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: hsl(210, 57%, 64%);
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
+  }
+  
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h1 {
     text-align: center;
-}
-
-h1 {
     color: #333;
-    margin-top: 30px;
-    font-size: 2.5em;
-}
-
-/* Exibição do relógio atual */
-.clock {
-    font-size: 3em;
-    color: #333;
-    margin-top: 20px;
-    font-weight: bold;
-}
-
-/* Estilo do formulário de configuração do alarme */
-.alarm-form {
+  }
+  
+  /* Estilo do alarme */
+  #alarme {
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    display: inline-block;
-    margin-top: 30px;
-}
-
-label {
-    display: block;
-    margin: 10px 0 5px;
-    color: #333;
-}
-
-input {
-    width: 250px;
-    padding: 12px;
-    margin: 5px 0;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 1.2em;
-}
-
-button {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  /* Estilo do botão de agendar */
+  button {
     background-color: #4CAF50;
     color: white;
-    padding: 15px 30px;
+    padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 1.3em;
-    margin-top: 20px;
-}
-
-button:hover {
+    width: 100%;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
     background-color: #45a049;
-}
-
-/* Estilo para os alarmes configurados */
-#scheduledAlarms {
-    margin-top: 40px;
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#alarmList {
-    list-style-type: none;
-    padding: 0;
-    margin-top: 20px;
-}
-
-#alarmList li {
-    background-color: #fff;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 8px;
-    border: 1px solid #ddd;
+  }
+  
+  /* Layout do alarme agendado */
+  #alarmes-agendados {
+    margin-top: 30px;
+  }
+  
+  .alarmes-agendados-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-#alarmList li .alarm-time {
-    font-weight: bold;
-    font-size: 1.3em;
-    color: #555;
-}
-
-#alarmList li .alarm-message {
-    font-size: 1.2em;
-    color: #333;
-    flex-grow: 1;
-    margin-left: 20px;
-}
-
-button.delete-button {
-    background-color: #ff4b5c;
-    color: white;
-    padding: 7px 15px;
-    border: none;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+  }
+  
+  .excluir {
+    background-color: #f44336;
+    padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 1em;
-}
-
-button.delete-button:hover {
-    background-color: #ff2a3b;
-}
-
-/* Estilo para a mensagem do alarme e o botão */
-#alarmMessage {
-    position: fixed; /* Fixa na tela */
-    top: 50%; /* Centraliza verticalmente */
-    left: 50%; /* Centraliza horizontalmente */
-    transform: translate(-50%, -50%); /* Ajusta para que o centro do elemento fique no centro da tela */
-    background-color: rgba(0, 0, 0, 0.8); /* Fundo escuro com transparência */
-    color: #fff; /* Texto branco */
-    font-size: 2.5em; /* Tamanho da fonte grande */
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    z-index: 9999; /* Garante que fique por cima de outros conteúdos */
-    width: 80%; /* Controla a largura do box */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7); /* Sombras para dar destaque */
-}
-
-/* Estilo para o botão de parar */
-button.stop-button {
-    display: block;
-    margin-top: 20px;
-    padding: 15px 30px;
-    background-color: #ff4b5c; /* Cor chamativa para o botão */
     color: white;
-    font-size: 1.3em;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-button.stop-button:hover {
-    background-color: #ff2a3b; /* Cor mais escura ao passar o mouse */
-}
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    /* Ajuste para telas menores */
+    .container {
+      padding: 15px;
+    }
+  
+    h1 {
+      font-size: 24px;
+    }
+  
+    button {
+      font-size: 14px;
+    }
+  
+    #alarme {
+      padding: 15px;
+    }
+  
+    .alarmes-agendados-item {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .excluir {
+      margin-top: 10px;
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    /* Ajuste para dispositivos móveis */
+    h1 {
+      font-size: 20px;
+    }
+  
+    #alarme {
+      padding: 10px;
+    }
+  
+    button {
+      font-size: 12px;
+      padding: 8px;
+    }
+  
+    .alarmes-agendados-item {
+      padding: 10px;
+    }
+  }
+  
