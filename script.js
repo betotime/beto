@@ -23,7 +23,7 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-// Função para criar notificações
+// Agendar notificações
 function scheduleNotification(time, message) {
   const now = new Date();
   const alarmTime = new Date(`${now.toDateString()} ${time}`);
@@ -31,14 +31,15 @@ function scheduleNotification(time, message) {
   if (alarmTime > now) {
       const timeout = alarmTime - now;
       setTimeout(() => {
-          showNotification(message);
+          triggerNotification(message);
       }, timeout);
   } else {
       alert("A hora do alarme já passou!");
   }
 }
 
-function showNotification(message) {
+// Função para disparar a notificação
+function triggerNotification(message) {
   if ("Notification" in window && Notification.permission === "granted") {
       navigator.serviceWorker.ready.then((registration) => {
           registration.showNotification("⏰ Alarme!", {
@@ -49,6 +50,27 @@ function showNotification(message) {
               requireInteraction: true,
           });
       });
+
+      // Tocar som de alarme
+      const audio = new Audio("sound.mp3");
+      audio.loop = true;
+      audio.play();
+
+      // Mostrar mensagem em tela cheia
+      const fullScreenMessage = document.createElement("div");
+      fullScreenMessage.className = "fullscreen-alarm";
+      fullScreenMessage.innerHTML = `
+          <div class="alarm-content">
+              <h1>${message}</h1>
+              <button id="stop-alarm">Parar</button>
+          </div>
+      `;
+      document.body.appendChild(fullScreenMessage);
+
+      document.getElementById("stop-alarm").onclick = () => {
+          audio.pause();
+          fullScreenMessage.remove();
+      };
   }
 }
 

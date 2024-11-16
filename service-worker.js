@@ -5,6 +5,7 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   console.log("Service Worker ativado.");
+  event.waitUntil(self.clients.claim());
 });
 
 self.addEventListener("notificationclick", (event) => {
