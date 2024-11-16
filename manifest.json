@@ -1,11 +1,11 @@
 {
-    "name": "Alarme PWA",
+    "name": "Alarme com Relógio",
     "short_name": "Alarme",
-    "description": "Aplicativo de alarme com notificações e sons.",
-    "start_url": "/",
+    "description": "Um aplicativo de alarme com relógio e mensagens programadas.",
+    "start_url": "index.html",
     "display": "standalone",
     "background_color": "#ffffff",
-    "theme_color": "#2196F3",
+    "theme_color": "#4CAF50",
     "icons": [
       {
         "src": "icon.png",

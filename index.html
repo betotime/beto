@@ -3,25 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alarme PWA</title>
+    <title>Alarme com Relógio</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
 </head>
 <body>
-    <div id="clock">
-        <h1 id="time">00:00:00</h1>
+    <div id="clock"></div>
+    <div>
+        <label for="message">Digite sua mensagem do alarme:</label>
+        <input type="text" id="message" placeholder="Mensagem do alarme">
     </div>
-    <div id="alarms">
-        <h2>Programar Alarme</h2>
-        <input type="time" id="alarm-time" required>
-        <textarea id="alarm-message" placeholder="Mensagem do Alarme" required></textarea>
-        <button id="set-alarm">Configurar Alarme</button>
-        <ul id="alarm-list"></ul>
+    <div>
+        <label for="alarm-time">Defina o horário do alarme (HH:MM):</label>
+        <input type="time" id="alarm-time">
+        <button onclick="setAlarm()">Programar Alarme</button>
     </div>
-    <div id="alarm-message-popup" style="display:none;">
-        <h2 id="alarm-message-text"></h2>
-        <button id="stop-alarm">Parar</button>
+    <div id="alarm-list"></div>
+
+    <div id="alarm-popup" class="hidden">
+        <p id="alarm-message"></p>
+        <button id="stop-alarm-btn" onclick="stopAlarm()">Parar Alarme</button>
     </div>
+
+    <audio id="alarm-sound" src="sound.mp3"></audio>
 
     <script src="script.js"></script>
 </body>
