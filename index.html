@@ -1,31 +1,22 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alarme com Relógio</title>
+    <title>Alarme Persistente</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="clock"></div>
-    <div>
-        <label for="message">Digite sua mensagem do alarme:</label>
-        <input type="text" id="message" placeholder="Mensagem do alarme">
+    <div class="container">
+        <h1>Alarme Persistente</h1>
+        <div id="clock"></div>
+        <div class="form">
+            <input type="time" id="alarm-time" placeholder="Hora do Alarme">
+            <input type="text" id="alarm-message" placeholder="Mensagem do Alarme">
+            <button onclick="addAlarm()">Adicionar Alarme</button>
+        </div>
+        <div id="alarm-list"></div>
     </div>
-    <div>
-        <label for="alarm-time">Defina o horário do alarme (HH:MM):</label>
-        <input type="time" id="alarm-time">
-        <button onclick="setAlarm()">Programar Alarme</button>
-    </div>
-    <div id="alarm-list"></div>
-
-    <div id="alarm-popup" class="hidden">
-        <p id="alarm-message"></p>
-        <button id="stop-alarm-btn" onclick="stopAlarm()">Parar Alarme</button>
-    </div>
-
-    <audio id="alarm-sound" src="sound.mp3"></audio>
-
     <script src="script.js"></script>
 </body>
 </html>

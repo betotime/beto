@@ -1,22 +1,20 @@
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-      caches.open('alarms-cache').then((cache) => {
-          return cache.addAll([
-              '/',
-              '/index.html',
-              '/style.css',
-              '/script.js',
-              '/manifest.json',
-              '/sound.mp3',
-          ]);
-      })
-  );
+self.addEventListener("install", (event) => {
+  console.log("Service Worker instalado.");
+  self.skipWaiting();
 });
 
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-      caches.match(event.request).then((response) => {
-          return response || fetch(event.request);
+self.addEventListener("activate", (event) => {
+  console.log("Service Worker ativado.");
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  event.waitUntil(
+      clients.matchAll({ type: "window" }).then((clientList) => {
+          if (clientList.length > 0) {
+              return clientList[0].focus();
+          }
+          return clients.openWindow("/");
       })
   );
 });

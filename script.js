@@ -1,106 +1,77 @@
-// Função para atualizar o relógio em tempo real
+// Registrar Service Worker
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+      .register("service-worker.js")
+      .then(() => console.log("Service Worker registrado com sucesso."))
+      .catch((error) => console.error("Erro ao registrar o Service Worker:", error));
+}
+
+// Solicitar permissão para notificações
+if ("Notification" in window) {
+  Notification.requestPermission().then((permission) => {
+      if (permission !== "granted") {
+          alert("As notificações precisam ser ativadas para os alarmes.");
+      }
+  });
+}
+
+// Relógio em tempo real
 function updateClock() {
-  const clock = document.getElementById("clock");
   const now = new Date();
-  clock.innerHTML = now.toLocaleTimeString();
+  document.getElementById("clock").textContent = now.toLocaleTimeString();
 }
 setInterval(updateClock, 1000);
+updateClock();
 
-// Função para programar um alarme
-function setAlarm() {
-  const alarmTime = document.getElementById("alarm-time").value;
-  const message = document.getElementById("message").value;
+// Função para criar notificações
+function scheduleNotification(time, message) {
+  const now = new Date();
+  const alarmTime = new Date(`${now.toDateString()} ${time}`);
 
-  if (!alarmTime || !message) {
+  if (alarmTime > now) {
+      const timeout = alarmTime - now;
+      setTimeout(() => {
+          showNotification(message);
+      }, timeout);
+  } else {
+      alert("A hora do alarme já passou!");
+  }
+}
+
+function showNotification(message) {
+  if ("Notification" in window && Notification.permission === "granted") {
+      navigator.serviceWorker.ready.then((registration) => {
+          registration.showNotification("⏰ Alarme!", {
+              body: message,
+              icon: "/alarm-icon.png",
+              vibrate: [200, 100, 200],
+              tag: "alarm",
+              requireInteraction: true,
+          });
+      });
+  }
+}
+
+// Adicionar alarmes
+function addAlarm() {
+  const timeInput = document.getElementById("alarm-time").value;
+  const messageInput = document.getElementById("alarm-message").value;
+
+  if (!timeInput || !messageInput) {
       alert("Por favor, preencha todos os campos.");
       return;
   }
 
-  // Adiciona o alarme na lista de alarmes
-  const alarmList = document.getElementById("alarm-list");
-  const alarmId = Date.now();
-  const alarmElement = document.createElement("div");
-  alarmElement.id = `alarm-${alarmId}`;
-  alarmElement.innerHTML = `
-      <span>Alarme programado para: ${alarmTime}</span>
-      <button onclick="removeAlarm(${alarmId})">Excluir</button>
-  `;
-  alarmList.appendChild(alarmElement);
+  const alarmContainer = document.createElement("div");
+  alarmContainer.textContent = `${timeInput} - ${messageInput}`;
+  const deleteButton = document.createElement("button");
+  deleteButton.textContent = "Excluir";
+  deleteButton.onclick = () => {
+      alarmContainer.remove();
+  };
 
-  // Salva o alarme no localStorage
-  const alarms = JSON.parse(localStorage.getItem("alarms")) || [];
-  alarms.push({ id: alarmId, time: alarmTime, message });
-  localStorage.setItem("alarms", JSON.stringify(alarms));
+  alarmContainer.appendChild(deleteButton);
+  document.getElementById("alarm-list").appendChild(alarmContainer);
 
-  // Define o alarme para disparar
-  setAlarmTimer(alarmId, alarmTime, message);
-}
-
-// Função para configurar o alarme no horário programado
-function setAlarmTimer(id, alarmTime, message) {
-  const [hours, minutes] = alarmTime.split(":").map(Number);
-  const now = new Date();
-  const alarmDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes, 0, 0);
-
-  if (alarmDate < now) {
-      alarmDate.setDate(alarmDate.getDate() + 1); // Se o horário já passou, define para o próximo dia
-  }
-
-  const timeToAlarm = alarmDate.getTime() - now.getTime();
-  setTimeout(() => triggerAlarm(message, id), timeToAlarm);
-}
-
-// Função para exibir a mensagem do alarme e tocar o som
-function triggerAlarm(message, id) {
-  const alarmPopup = document.getElementById("alarm-popup");
-  const alarmMessage = document.getElementById("alarm-message");
-  const alarmSound = document.getElementById("alarm-sound");
-
-  alarmMessage.innerHTML = message;
-  alarmPopup.style.display = "flex"; // Torna o pop-up visível
-  alarmSound.play();
-
-  // A função stopAlarm já está definida fora para parar o som e esconder o pop-up
-}
-
-// Função para parar o alarme
-function stopAlarm() {
-  const alarmPopup = document.getElementById("alarm-popup");
-  const alarmSound = document.getElementById("alarm-sound");
-
-  alarmPopup.style.display = "none"; // Esconde o pop-up
-  alarmSound.pause();
-  alarmSound.currentTime = 0; // Reseta o som para o início
-
-  // Remove o alarme da lista de localStorage
-  const alarms = JSON.parse(localStorage.getItem("alarms"));
-  const updatedAlarms = alarms.filter(alarm => alarm.id !== id);
-  localStorage.setItem("alarms", JSON.stringify(updatedAlarms));
-  removeAlarm(id); // Remove o alarme da lista visual
-}
-
-// Função para excluir um alarme da lista
-function removeAlarm(id) {
-  const alarmElement = document.getElementById(`alarm-${id}`);
-  alarmElement.remove();
-
-  const alarms = JSON.parse(localStorage.getItem("alarms"));
-  const updatedAlarms = alarms.filter(alarm => alarm.id !== id);
-  localStorage.setItem("alarms", JSON.stringify(updatedAlarms));
-}
-
-// Carregar alarmes programados ao carregar a página
-window.onload = function() {
-  const alarms = JSON.parse(localStorage.getItem("alarms")) || [];
-  alarms.forEach(alarm => {
-      setAlarmTimer(alarm.id, alarm.time, alarm.message);
-      const alarmList = document.getElementById("alarm-list");
-      const alarmElement = document.createElement("div");
-      alarmElement.id = `alarm-${alarm.id}`;
-      alarmElement.innerHTML = `
-          <span>Alarme programado para: ${alarm.time}</span>
-          <button onclick="removeAlarm(${alarm.id})">Excluir</button>
-      `;
-      alarmList.appendChild(alarmElement);
-  });
+  scheduleNotification(timeInput, messageInput);
 }
