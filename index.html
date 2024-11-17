@@ -1,28 +1,24 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alarme Programado</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="manifest" href="manifest.json">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alarme PWA</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1 id="relogio">00:00:00</h1>
+  <div class="clock" id="clock"></div>
+  <div class="message">
+    <label for="message">Digite sua mensagem para o alarme:</label>
+    <input type="text" id="message" placeholder="Mensagem do alarme">
+  </div>
+  <div class="alarm">
+    <label for="time">Hora do alarme:</label>
+    <input type="time" id="time">
+    <button id="set-alarm">Programar Alarme</button>
+  </div>
+  <div class="alarms" id="alarms-list"></div>
 
-        <div id="mensagem-container">
-            <input type="text" id="mensagem" placeholder="Digite sua mensagem do alarme">
-        </div>
-
-        <div id="programar-alarmes">
-            <h3>Programar Alarme</h3>
-            <input type="time" id="hora-alarme">
-            <button id="adicionar-alarme">Adicionar Alarme</button>
-            <ul id="lista-alarmes"></ul>
-        </div>
-    </div>
-
-    <script src="app.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
