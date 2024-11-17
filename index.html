@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,18 +7,35 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="clock-container">
-        <div id="clock" class="clock"></div>
+    <div class="container">
+        <div class="clock" id="clock"></div>
+        <div class="message-section">
+            <input type="text" id="message" placeholder="Digite a mensagem do alarme">
+        </div>
+        <div class="alarms">
+            <h2>Alarmes Programados</h2>
+            <ul id="alarm-list"></ul>
+            <button id="add-alarm">Adicionar Alarme</button>
+        </div>
     </div>
-
-    <div class="alarm-container">
-        <input type="text" id="message" placeholder="Digite sua mensagem para o alarme" class="input-field">
-        <input type="datetime-local" id="alarm-time" class="input-field">
-        <button id="set-alarm" class="button">Adicionar Alarme</button>
-    </div>
-
-    <div id="alarms-list" class="alarms-list"></div>
 
     <script src="script.js"></script>
+    <script>
+        if ('serviceWorker' in navigator && 'PushManager' in window) {
+            navigator.serviceWorker.register('service-worker.js').then(function(registration) {
+                console.log('Service Worker registrado com sucesso:', registration);
+                return registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: '<YOUR_VAPID_PUBLIC_KEY>'
+                });
+            }).then(function(subscription) {
+                console.log('Inscrição realizada com sucesso para push notifications:', subscription);
+            }).catch(function(error) {
+                console.error('Erro ao registrar Service Worker ou inscrever para push notifications:', error);
+            });
+        } else {
+            console.log('Service Workers ou Push Notifications não são suportados por este navegador.');
+        }
+    </script>
 </body>
 </html>

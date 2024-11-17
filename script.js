@@ -1,148 +1,109 @@
-// Função para exibir o relógio
-function updateClock() {
-  const clockElement = document.getElementById('clock');
-  const currentTime = new Date();
-  const hours = currentTime.getHours().toString().padStart(2, '0');
-  const minutes = currentTime.getMinutes().toString().padStart(2, '0');
-  const seconds = currentTime.getSeconds().toString().padStart(2, '0');
-  clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+// Função para exibir o relógio em tempo real
+function startClock() {
+  const clock = document.getElementById("clock");
+  setInterval(() => {
+      const now = new Date();
+      clock.innerHTML = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+  }, 1000);
 }
 
-// Função para adicionar o alarme
-function addAlarm() {
-  const message = document.getElementById('message').value;
-  const alarmTime = document.getElementById('alarm-time').value;
-
-  if (!message || !alarmTime) {
-      alert("Por favor, preencha todos os campos.");
-      return;
+// Função para adicionar um alarme
+document.getElementById("add-alarm").addEventListener("click", function() {
+  const alarmTime = prompt("Digite o horário do alarme (HH:MM:SS):");
+  const message = document.getElementById("message").value || "Alarme disparado!";
+  if (alarmTime) {
+      const alarms = JSON.parse(localStorage.getItem("alarms")) || [];
+      alarms.push({ time: alarmTime, message: message });
+      localStorage.setItem("alarms", JSON.stringify(alarms));
+      displayAlarms();
+      checkAlarms();
   }
+});
 
+// Exibe os alarmes da lista
+function displayAlarms() {
   const alarms = JSON.parse(localStorage.getItem("alarms")) || [];
-  const alarm = {
-      message: message,
-      alarmTime: alarmTime,
-      triggered: false
-  };
-
-  alarms.push(alarm);
-  localStorage.setItem("alarms", JSON.stringify(alarms));
-  renderAlarms(); // Atualiza a lista de alarmes
-}
-
-// Função para renderizar os alarmes
-function renderAlarms() {
-  const alarmsList = document.getElementById('alarms-list');
-  const alarms = JSON.parse(localStorage.getItem("alarms")) || [];
-
-  alarmsList.innerHTML = ""; // Limpar lista antes de renderizar
-
+  const alarmList = document.getElementById("alarm-list");
+  alarmList.innerHTML = '';
   alarms.forEach((alarm, index) => {
-      const alarmItem = document.createElement('div');
-      alarmItem.classList.add('alarm-item');
-      alarmItem.innerHTML = `
-          <span>${alarm.message} - ${new Date(alarm.alarmTime).toLocaleString()}</span>
-          <button onclick="deleteAlarm(${index})">Excluir</button>
-      `;
-      alarmsList.appendChild(alarmItem);
+      const li = document.createElement('li');
+      li.textContent = `${alarm.time} - ${alarm.message}`;
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = "Excluir";
+      deleteButton.onclick = function() {
+          alarms.splice(index, 1);
+          localStorage.setItem("alarms", JSON.stringify(alarms));
+          displayAlarms();
+      };
+      li.appendChild(deleteButton);
+      alarmList.appendChild(li);
   });
 }
 
-// Função para excluir o alarme
-function deleteAlarm(index) {
-  const alarms = JSON.parse(localStorage.getItem("alarms")) || [];
-  alarms.splice(index, 1);
-  localStorage.setItem("alarms", JSON.stringify(alarms));
-  renderAlarms(); // Atualiza a lista de alarmes
-}
-
-// Função para verificar os alarmes e disparar o alarme quando for a hora
+// Verifica se algum alarme deve ser disparado
 function checkAlarms() {
   const alarms = JSON.parse(localStorage.getItem("alarms")) || [];
-  const currentTime = new Date();
+  const now = new Date();
+  alarms.forEach(alarm => {
+      const [hours, minutes, seconds] = alarm.time.split(":");
+      const alarmTime = new Date();
+      alarmTime.setHours(hours, minutes, seconds);
 
-  alarms.forEach((alarm, index) => {
-      const alarmTime = new Date(alarm.alarmTime);
-      if (alarmTime <= currentTime && !alarm.triggered) {
-          // Marcar o alarme como disparado
-          alarm.triggered = true;
-          localStorage.setItem("alarms", JSON.stringify(alarms));
-
-          // Mostrar a notificação com a mensagem do alarme
-          showNotification(alarm.message);
-
-          // Tocar o som imediatamente
-          const audio = new Audio('alarm.mp3');
-          audio.loop = true;  // Loop para o som tocar até ser parado
-          audio.play();
-
-          // Vibrar o dispositivo (se suportado)
-          if (navigator.vibrate) {
-              navigator.vibrate([1000, 1000, 1000]); // Vibra 3 vezes
-          }
-
-          // Criar botão para parar o alarme
-          showStopButton(audio, alarm, alarms, index);
+      if (now >= alarmTime && now < new Date(alarmTime.getTime() + 1000)) {
+          triggerAlarm(alarm.message);
       }
   });
 }
 
-// Função para mostrar a notificação do alarme (push)
-function showNotification(message) {
+// Função para disparar o alarme
+function triggerAlarm(message) {
+  // Envia a notificação push
   if (Notification.permission === 'granted') {
-      const options = {
-          body: message,
-          icon: 'icon.png',  // Coloque o ícone desejado
-      };
-      new Notification('Alarme Disparado!', options);
+      navigator.serviceWorker.ready.then(function(registration) {
+          registration.showNotification('Alarme Disparado!', {
+              body: message,
+              icon: 'icon.png',
+              sound: 'alarm-sound.mp3',
+              vibrate: [1000, 1000, 1000],
+              tag: 'alarm-notification',
+          });
+      });
   }
+
+  // Reproduz o som localmente
+  const audio = new Audio('alarm-sound.mp3');
+  audio.play();
+
+  // Vibra o dispositivo
+  if (navigator.vibrate) {
+      navigator.vibrate([1000, 1000, 1000]);
+  }
+
+  // Mostra a mensagem em tela cheia
+  const fullScreenMessage = document.createElement('div');
+  fullScreenMessage.textContent = message;
+  fullScreenMessage.style.position = 'fixed';
+  fullScreenMessage.style.top = 0;
+  fullScreenMessage.style.left = 0;
+  fullScreenMessage.style.right = 0;
+  fullScreenMessage.style.bottom = 0;
+  fullScreenMessage.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+  fullScreenMessage.style.color = 'white';
+  fullScreenMessage.style.display = 'flex';
+  fullScreenMessage.style.justifyContent = 'center';
+  fullScreenMessage.style.alignItems = 'center';
+  fullScreenMessage.style.fontSize = '3em';
+  fullScreenMessage.style.zIndex = '9999';
+  fullScreenMessage.style.cursor = 'pointer';
+
+  fullScreenMessage.onclick = function() {
+      document.body.removeChild(fullScreenMessage);
+  };
+
+  document.body.appendChild(fullScreenMessage);
 }
 
-// Função para mostrar o botão "parar"
-function showStopButton(audio, alarm, alarms, index) {
-  const stopButton = document.createElement('button');
-  stopButton.textContent = 'Parar';
-  stopButton.style.position = 'fixed';
-  stopButton.style.top = '50%';
-  stopButton.style.left = '50%';
-  stopButton.style.transform = 'translate(-50%, -50%)';
-  stopButton.style.fontSize = '2em';
-  stopButton.style.padding = '20px';
-  stopButton.style.backgroundColor = '#f44336';
-  stopButton.style.color = '#fff';
-  stopButton.style.border = 'none';
-  stopButton.style.borderRadius = '5px';
-  stopButton.style.cursor = 'pointer';
-  document.body.appendChild(stopButton);
-
-  // Quando o botão "parar" for clicado, parar o som e remover o botão
-  stopButton.addEventListener('click', () => {
-      audio.pause();
-      audio.currentTime = 0;
-      stopButton.remove();
-
-      // Remover vibração
-      if (navigator.vibrate) {
-          navigator.vibrate(0);  // Parar a vibração
-      }
-
-      // Remover o alarme disparado da lista
-      alarms.splice(index, 1);
-      localStorage.setItem('alarms', JSON.stringify(alarms));
-  });
-}
-
-// Inicialização: Verificar os alarmes a cada segundo
+// Inicia o relógio e exibe alarmes
+startClock();
+displayAlarms();
 setInterval(checkAlarms, 1000);
-
-// Inicialização: Atualizar o relógio a cada segundo
-setInterval(updateClock, 1000);
-
-// Inicializa o relógio assim que a página carregar
-window.onload = () => {
-  updateClock();
-  renderAlarms(); // Renderiza os alarmes salvos
-};
-
-// Evento do botão de adicionar alarme
-document.getElementById('set-alarm').addEventListener('click', addAlarm);
