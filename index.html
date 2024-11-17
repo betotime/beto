@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alarme</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Relógio e Alarmes</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="app">
-        <h1>Relógio</h1>
-        <div id="clock"></div>
-
-        <h2>Configurar Alarme</h2>
-        <input type="time" id="alarm-time" required>
-        <input type="text" id="alarm-message" placeholder="Mensagem do alarme" required>
-        <button onclick="addAlarm()">Adicionar Alarme</button>
-
-        <h2>Lista de Alarmes</h2>
-        <div id="alarm-list"></div>
+    <div class="clock-container">
+        <div id="clock" class="clock"></div>
     </div>
+
+    <div class="alarm-container">
+        <input type="text" id="message" placeholder="Digite sua mensagem para o alarme" class="input-field">
+        <input type="datetime-local" id="alarm-time" class="input-field">
+        <button id="set-alarm" class="button">Adicionar Alarme</button>
+    </div>
+
+    <div id="alarms-list" class="alarms-list"></div>
+
     <script src="script.js"></script>
 </body>
 </html>

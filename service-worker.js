@@ -1,22 +1,43 @@
 self.addEventListener("install", (event) => {
-  console.log("Service Worker instalado.");
-  self.skipWaiting();
+  event.waitUntil(
+      caches.open("alarm-clock-v1").then((cache) => {
+          return cache.addAll([
+              "index.html",
+              "styles.css",
+              "script.js",
+              "alarm.mp3",
+              "icon-192x192.png", // Ícone de notificação
+              "icon-512x512.png"
+          ]);
+      })
+  );
 });
 
 self.addEventListener("activate", (event) => {
-  console.log("Service Worker ativado.");
-  event.waitUntil(self.clients.claim());
+  event.waitUntil(
+      self.clients.claim() // Garante que o service worker assume o controle imediatamente
+  );
 });
 
+// Ouvir eventos de push para disparar notificações
+self.addEventListener("push", (event) => {
+  const data = event.data ? event.data.json() : {};
+  const title = data.title || "Alarme!";
+  const options = {
+      body: data.body,
+      icon: "icon-192x192.png",
+      badge: "icon-192x192.png",
+      vibrate: [200, 100, 200], // Vibração contínua até interação
+  };
+
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+// Interagir com a notificação clicada
 self.addEventListener("notificationclick", (event) => {
-  console.log("Notificação clicada:", event.notification);
   event.notification.close();
+  // Aqui você pode abrir a página da aplicação ou realizar outra ação
   event.waitUntil(
-      clients.matchAll({ type: "window" }).then((clientList) => {
-          if (clientList.length > 0) {
-              return clientList[0].focus();
-          }
-          return clients.openWindow("/");
-      })
+      clients.openWindow("/")
   );
 });
