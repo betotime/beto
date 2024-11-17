@@ -1,95 +1,44 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f7f7f7;
+  font-family: Arial, sans-serif;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
-}
-
-.container {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  width: 90%;
-  max-width: 400px;
-  padding: 20px;
-}
-
-.clock-container {
-  text-align: center;
+  margin: 0;
+  background-color: #f0f0f0;
 }
 
 #clock {
-  font-size: 3em;
+  font-size: 3rem;
   font-weight: bold;
-  color: #333;
   margin-bottom: 20px;
 }
 
-.alarm-container {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.alarm-container input {
+input, button {
   padding: 10px;
-  font-size: 1em;
   margin: 5px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  width: 80%;
 }
 
-.alarm-container button {
-  padding: 10px 20px;
-  font-size: 1em;
-  margin-top: 10px;
-  border: none;
-  background-color: #4CAF50;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.alarm-container button:hover {
-  background-color: #45a049;
-}
-
-.alarms-list-container {
-  margin-top: 30px;
-}
-
-.alarms-list {
+#alarmList {
   list-style-type: none;
   padding: 0;
 }
 
-.alarm-item {
-  background-color: #f2f2f2;
-  border-radius: 5px;
+#alarmList li {
+  background-color: #fff;
   padding: 10px;
   margin: 5px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  border: 1px solid #ddd;
 }
 
-.alarm-item button {
-  padding: 5px 10px;
-  background-color: red;
+button {
+  background-color: #4CAF50;
   color: white;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
 }
 
-.alarm-item button:hover {
-  background-color: #cc0000;
+button:hover {
+  background-color: #45a049;
 }
