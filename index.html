@@ -3,43 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relógio e Alarmes</title>
+    <title>Alarme Programado</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <div class="container">
-        <div class="clock" id="clock"></div>
-        <div class="message-section">
-            <input type="text" id="message" placeholder="Digite a mensagem do alarme">
+        <h1 id="relogio">00:00:00</h1>
+
+        <div id="mensagem-container">
+            <input type="text" id="mensagem" placeholder="Digite sua mensagem do alarme">
         </div>
-        <div class="alarm-form">
-            <label for="alarm-time">Horário do Alarme:</label>
-            <input type="time" id="alarm-time">
-            <button id="add-alarm">Adicionar Alarme</button>
-        </div>
-        <div class="alarms">
-            <h2>Alarmes Programados</h2>
-            <ul id="alarm-list"></ul>
+
+        <div id="programar-alarmes">
+            <h3>Programar Alarme</h3>
+            <input type="time" id="hora-alarme">
+            <button id="adicionar-alarme">Adicionar Alarme</button>
+            <ul id="lista-alarmes"></ul>
         </div>
     </div>
 
-    <script src="script.js"></script>
-    <script>
-        if ('serviceWorker' in navigator && 'PushManager' in window) {
-            navigator.serviceWorker.register('service-worker.js').then(function(registration) {
-                console.log('Service Worker registrado com sucesso:', registration);
-                return registration.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: '<YOUR_VAPID_PUBLIC_KEY>'
-                });
-            }).then(function(subscription) {
-                console.log('Inscrição realizada com sucesso para push notifications:', subscription);
-            }).catch(function(error) {
-                console.error('Erro ao registrar Service Worker ou inscrever para push notifications:', error);
-            });
-        } else {
-            console.log('Service Workers ou Push Notifications não são suportados por este navegador.');
-        }
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>

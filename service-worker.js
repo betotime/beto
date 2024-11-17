@@ -1,20 +1,25 @@
 self.addEventListener('push', function(event) {
-  let options = {
+  const options = {
       body: event.data.text(),
       icon: 'icon.png',
-      sound: 'alarm-sound.mp3',
-      vibrate: [1000, 1000, 1000],
-      tag: 'alarm-notification',
+      badge: 'badge.png',
+      vibration: [200, 100, 200],  // Vibração contínua
+      actions: [
+          {
+              action: 'parar',
+              title: 'Parar',
+          }
+      ]
   };
 
   event.waitUntil(
-      self.registration.showNotification('Alarme Disparado!', options)
+      self.registration.showNotification('Alarme Programado', options)
   );
 });
 
 self.addEventListener('notificationclick', function(event) {
-  event.notification.close();
-  event.waitUntil(
-      clients.openWindow('/')  // Abre a página da aplicação ao clicar
-  );
+  if (event.action === 'parar') {
+      event.notification.close();
+      // Lógica para parar som ou vibração (pode ser aprimorada)
+  }
 });
