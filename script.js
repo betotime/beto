@@ -9,7 +9,7 @@ function startClock() {
 
 // Função para adicionar um alarme
 document.getElementById("add-alarm").addEventListener("click", function() {
-  const alarmTime = prompt("Digite o horário do alarme (HH:MM:SS):");
+  const alarmTime = document.getElementById("alarm-time").value;
   const message = document.getElementById("message").value || "Alarme disparado!";
   if (alarmTime) {
       const alarms = JSON.parse(localStorage.getItem("alarms")) || [];
@@ -30,6 +30,7 @@ function displayAlarms() {
       li.textContent = `${alarm.time} - ${alarm.message}`;
       const deleteButton = document.createElement('button');
       deleteButton.textContent = "Excluir";
+      deleteButton.classList.add('delete');
       deleteButton.onclick = function() {
           alarms.splice(index, 1);
           localStorage.setItem("alarms", JSON.stringify(alarms));
@@ -45,9 +46,9 @@ function checkAlarms() {
   const alarms = JSON.parse(localStorage.getItem("alarms")) || [];
   const now = new Date();
   alarms.forEach(alarm => {
-      const [hours, minutes, seconds] = alarm.time.split(":");
+      const [hours, minutes] = alarm.time.split(":");
       const alarmTime = new Date();
-      alarmTime.setHours(hours, minutes, seconds);
+      alarmTime.setHours(hours, minutes, 0);
 
       if (now >= alarmTime && now < new Date(alarmTime.getTime() + 1000)) {
           triggerAlarm(alarm.message);
@@ -97,13 +98,17 @@ function triggerAlarm(message) {
   fullScreenMessage.style.cursor = 'pointer';
 
   fullScreenMessage.onclick = function() {
-      document.body.removeChild(fullScreenMessage);
+      fullScreenMessage.remove();
   };
 
   document.body.appendChild(fullScreenMessage);
 }
 
-// Inicia o relógio e exibe alarmes
+// Inicia o relógio
 startClock();
+
+// Exibe os alarmes ao carregar
 displayAlarms();
-setInterval(checkAlarms, 1000);
+
+// Verifica os alarmes a cada 60 segundos
+setInterval(checkAlarms, 60000);
