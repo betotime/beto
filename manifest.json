@@ -1,14 +1,13 @@
 {
     "name": "Alarme PWA",
     "short_name": "Alarme",
-    "description": "Alarme programado com notificações e vibração",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#fff",
-    "theme_color": "#000",
+    "background_color": "#ffffff",
+    "description": "Uma aplicação PWA de alarme.",
     "icons": [
         {
-            "src": "icon.png",
+            "src": "icone.png",
             "sizes": "192x192",
             "type": "image/png"
         }
