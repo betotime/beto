@@ -39,6 +39,19 @@ function deleteAlarm(alarm, li) {
   li.remove();
 }
 
+function sendPushNotification(message) {
+  if ('serviceWorker' in navigator && 'PushManager' in window) {
+      navigator.serviceWorker.ready.then(function(registration) {
+          registration.showNotification('Alarme', {
+              body: message,
+              icon: 'icone.png',
+              vibrate: [200, 100, 200],
+              tag: 'alarm-notification'
+          });
+      });
+  }
+}
+
 function checkAlarms() {
   const now = new Date();
   const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
@@ -46,7 +59,7 @@ function checkAlarms() {
   alarms.forEach(alarm => {
       console.log(`Verificando alarme: ${alarm.time}`); // Adiciona log para depuração
       if (alarm.time === currentTime) {
-          showNotification(alarm.message);
+          sendPushNotification(alarm.message); // Envia notificação push
           playAlarmSound();
           showAlarmPopup(alarm.message);
           alarms = alarms.filter(a => a !== alarm);

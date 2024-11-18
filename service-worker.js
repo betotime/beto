@@ -6,6 +6,7 @@ self.addEventListener('push', function(event) {
   const data = event.data.json();
   self.registration.showNotification(data.title, {
       body: data.message,
-      icon: 'icone.png'
+      icon: 'icone.png',
+      vibrate: [200, 100, 200]
   });
 });
