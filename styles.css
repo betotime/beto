@@ -15,10 +15,11 @@ body {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  width: 100%; /* Ajustar para o máximo de largura possível */
 }
 
 #clock {
-  font-size: 3em; /* Aumenta o tamanho do relógio */
+  font-size: 6em; /* Aumenta o tamanho do relógio */
   margin-bottom: 20px;
   color: #00aced; /* Azul escuro */
 }
@@ -34,9 +35,9 @@ textarea, input {
 }
 
 button {
-  padding: 10px 20px;
+  padding: 15px 30px; /* Aumenta o tamanho do botão */
   margin-top: 10px;
-  font-size: 1em;
+  font-size: 1.2em; /* Aumenta o tamanho do texto do botão */
   border-radius: 20px; /* Deixa o botão arredondado */
   border: none;
   background-color: #00aced; /* Cor do botão */
