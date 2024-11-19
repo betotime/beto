@@ -4,7 +4,7 @@ body {
   align-items: center;
   height: 100vh;
   font-family: Arial, sans-serif;
-  background-color: #c51ed4; /* Fundo preto */
+  background-color: hsl(0, 24%, 75%); /* Fundo preto */
   color: #fff; /* Texto branco */
   margin: 0;
 }
@@ -24,7 +24,7 @@ body {
   color: #00aced; /* Azul escuro */
 }
 
-textarea, input {
+textarea {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -32,6 +32,25 @@ textarea, input {
   border: 1px solid #ccc;
   background: #333;
   color: #fff;
+}
+
+input[type="time"].time-button {
+  width: auto; /* Ajuste a largura automaticamente */
+  padding: 10px 20px; /* Padroniza o estilo do botão */
+  margin-top: 10px;
+  font-size: 1.2em;
+  border-radius: 20px; /* Deixa o campo arredondado */
+  border: none;
+  background-color: #00aced; /* Cor do campo */
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-align: center; /* Centraliza o texto */
+  appearance: none; /* Remove o estilo padrão do campo de tempo */
+}
+
+input[type="time"].time-button:hover {
+  background-color: #0084b4; /* Cor ao passar o mouse */
 }
 
 button {
