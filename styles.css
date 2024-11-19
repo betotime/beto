@@ -4,8 +4,8 @@ body {
   align-items: center;
   height: 100vh;
   font-family: Arial, sans-serif;
-  background-color: #28d1ac; /* Fundo preto */
-  color: hsl(0, 0%, 100%); /* Texto branco */
+  background-color: hsl(236, 45%, 58%); /* Fundo preto */
+  color: #fff; /* Texto branco */
   margin: 0;
 }
 
