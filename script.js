@@ -1,3 +1,12 @@
+// Registrar o Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').then(function(registration) {
+      console.log('Service Worker registrado com sucesso', registration);
+  }).catch(function(error) {
+      console.error('Falha ao registrar o Service Worker', error);
+  });
+}
+
 // Relógio em tempo real
 function updateClock() {
   const now = new Date();
@@ -39,19 +48,6 @@ function deleteAlarm(alarm, li) {
   li.remove();
 }
 
-function sendPushNotification(message) {
-  if ('serviceWorker' in navigator && 'PushManager' in window) {
-      navigator.serviceWorker.ready.then(function(registration) {
-          registration.showNotification('Alarme', {
-              body: message,
-              icon: 'icone.png',
-              vibrate: [200, 100, 200],
-              tag: 'alarm-notification'
-          });
-      });
-  }
-}
-
 function checkAlarms() {
   const now = new Date();
   const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
@@ -74,17 +70,16 @@ function playAlarmSound() {
   alarmSound.play().catch(error => console.error('Erro ao tocar o som do alarme:', error));
 }
 
-function showNotification(message) {
-  if (Notification.permission === 'granted') {
-      navigator.serviceWorker.getRegistration().then(function(reg) {
-          reg.showNotification('Alarme', {
-              body: message,
-              icon: 'icone.png',
-              vibrate: [200, 100, 200],
-              tag: 'alarm-notification'
-          });
+function sendPushNotification(message) {
+  navigator.serviceWorker.ready.then(function(registration) {
+      registration.showNotification('Alarme', {
+          body: message,
+          icon: 'icone.png',
+          vibrate: [200, 100, 200],
+          data: { url: window.location.href },
+          tag: 'alarm-notification'
       });
-  }
+  });
 }
 
 function showAlarmPopup(message) {
