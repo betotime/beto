@@ -4,8 +4,8 @@ body {
   align-items: center;
   height: 100vh;
   font-family: Arial, sans-serif;
-  background-color: hsl(310, 100%, 87%); /* Fundo preto */
-  color: #fff; /* Texto branco */
+  background-color: #000; /* Fundo preto */
+  color: #a7e0a2; /* Texto branco */
   margin: 0;
 }
 
@@ -53,6 +53,10 @@ input[type="time"].time-button {
   transition: background-color 0.3s;
   text-align: center; /* Centraliza o texto */
   appearance: none; /* Remove o estilo padrão do campo de tempo */
+}
+
+input[type="time"].time-button::placeholder {
+  color: #fff; /* Cor do placeholder */
 }
 
 input[type="time"].time-button:hover {
