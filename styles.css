@@ -4,20 +4,23 @@ body {
   align-items: center;
   height: 100vh;
   font-family: Arial, sans-serif;
-  background-color: hsl(56, 71%, 51%);
+  background-color: #000; /* Fundo preto */
+  color: #fff; /* Texto branco */
+  margin: 0;
 }
 
 .container {
   text-align: center;
-  background: #fff;
+  background: #1a1a1a; /* Fundo cinza escuro */
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
 #clock {
-  font-size: 2em;
+  font-size: 3em; /* Aumenta o tamanho do relógio */
   margin-bottom: 20px;
+  color: #00aced; /* Azul escuro */
 }
 
 textarea, input {
@@ -26,6 +29,24 @@ textarea, input {
   margin: 10px 0;
   border-radius: 4px;
   border: 1px solid #ccc;
+  background: #333;
+  color: #fff;
+}
+
+button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  font-size: 1em;
+  border-radius: 20px; /* Deixa o botão arredondado */
+  border: none;
+  background-color: #00aced; /* Cor do botão */
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0084b4; /* Cor do botão ao passar o mouse */
 }
 
 .popup {
@@ -35,15 +56,31 @@ textarea, input {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
   justify-content: center;
   align-items: center;
 }
 
 .popup-content {
-  background-color: #fff;
+  background-color: #1a1a1a;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.popup-content button {
+  background-color: #00aced;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 1em;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.popup-content button:hover {
+  background-color: #0084b4;
 }
