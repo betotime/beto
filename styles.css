@@ -21,7 +21,7 @@ body {
 #clock {
   font-size: 6em; /* Aumenta o tamanho do relógio */
   margin-bottom: 20px;
-  color: #00aced; /* Azul escuro */
+  color: hsl(236, 95%, 31%); /* Azul escuro */
 }
 
 textarea {
