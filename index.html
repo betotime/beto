@@ -8,10 +8,12 @@
 </head>
 <body>
     <div class="container">
-        <div id="clock"></div> <!-- Removido o título e deixado apenas o relógio -->
+        <div id="clock"></div>
         <textarea id="message" placeholder="Digite sua mensagem..."></textarea>
-        <input type="time" id="alarmTime">
-        <button onclick="setAlarm()">Definir Alarme</button>
+        <div class="input-group">
+            <input type="time" id="alarmTime" class="time-button"> <!-- Estilizar como botão -->
+            <button onclick="setAlarm()">Definir Alarme</button>
+        </div>
         <ul id="alarmsList"></ul>
     </div>
     <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
