@@ -1,6 +1,6 @@
 self.addEventListener('install', function(event) {
   console.log('Service Worker instalado');
-  self.skipWaiting(); // Ativação imediata
+  self.skipWaiting();
 });
 
 self.addEventListener('push', function(event) {
@@ -9,7 +9,9 @@ self.addEventListener('push', function(event) {
       body: data.body,
       icon: 'icone.png',
       vibrate: [200, 100, 200],
-      data: { url: data.url }
+      data: {
+          url: data.url
+      }
   };
   event.waitUntil(
       self.registration.showNotification(data.title, options)

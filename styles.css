@@ -4,7 +4,7 @@ body {
   align-items: center;
   height: 100vh;
   font-family: Arial, sans-serif;
-  background-color: #28dbd2;
+  background-color: hsl(56, 71%, 51%);
 }
 
 .container {
