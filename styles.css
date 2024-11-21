@@ -80,15 +80,25 @@ button:hover {
   background-color: #0084b4; /* Cor do botão ao passar o mouse */
 }
 
-button.delete-button {
-  padding: 5px 10px; /* Reduz o tamanho do botão "Excluir" */
-  font-size: 0.8em; /* Reduz o tamanho do texto do botão "Excluir" */
-  border-radius: 10px; /* Bordas arredondadas */
-  background-color: #e74c3c; /* Cor vermelha para o botão "Excluir" */
+.delete-button {
+  color: #e74c3c; /* Cor vermelha para o ícone */
+  font-size: 1.2em; /* Tamanho do ícone */
+  cursor: pointer;
+  transition: color 0.3s;
 }
 
-button.delete-button:hover {
-  background-color: #c0392b; /* Cor ao passar o mouse no botão "Excluir" */
+.delete-button:hover {
+  color: #c0392b; /* Cor ao passar o mouse no ícone */
+}
+
+.alarm-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #333; /* Fundo do item do alarme */
+  border-radius: 4px; /* Bordas arredondadas */
 }
 
 .popup {
@@ -110,6 +120,13 @@ button.delete-button:hover {
   text-align: center;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
   color: #fff;
+  width: 90%; /* Centraliza e usa quase toda a largura */
+  max-width: 500px; /* Limita a largura máxima */
+}
+
+.popup-content p {
+  font-size: 1.5em;
+  margin-bottom: 20px;
 }
 
 .popup-content button {
