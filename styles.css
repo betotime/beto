@@ -4,7 +4,7 @@ body {
   align-items: center;
   height: 100vh;
   font-family: Arial, sans-serif;
-  background-color: hwb(202 19% 7%); /* Fundo preto */
+  background-color: hsl(300, 46%, 62%); /* Fundo preto */
   color: #fff; /* Texto branco */
   margin: 0;
 }
@@ -42,7 +42,7 @@ textarea {
   margin-top: 10px;
 }
 
-input[type="time"].time-button {
+input[type="time"].time-button, #recurrence {
   padding: 15px 30px; /* Padroniza o estilo do botão */
   width: auto; /* Ajuste a largura */
   font-size: 1.2em;
@@ -60,7 +60,7 @@ input[type="time"].time-button::placeholder {
   color: #fff; /* Cor do placeholder */
 }
 
-input[type="time"].time-button:hover {
+input[type="time"].time-button:hover, #recurrence:hover {
   background-color: #555; /* Cor ao passar o mouse */
 }
 
