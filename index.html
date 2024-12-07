@@ -13,15 +13,15 @@
         <textarea id="message" placeholder="Digite sua mensagem..."></textarea>
         <div class="input-group">
             <input type="time" id="alarmTime" class="time-button" placeholder="Programe o alarme"> <!-- Estilizar como botão -->
-            <select id="recurrence">
-                <option value="none">Sem Recorrência</option>
-                <option value="daily">Diário</option>
-                <option value="weekly">Semanal</option>
-                <option value="monthly">Mensal</option>
-            </select>
             <button onclick="setAlarm()">Definir Alarme</button>
         </div>
-        <ul id="alarmsList"></ul>
+        <ul id="alarmsList">
+            <!-- Exemplo de alarme com ícone de lixeira -->
+            <li class="alarm-item">
+                <span class="message">Mensagem de Alarme</span>
+                <i class="fas fa-trash delete-button" onclick="deleteAlarm(this)"></i>
+            </li>
+        </ul>
     </div>
     <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
     <div id="alarmPopup" class="popup">

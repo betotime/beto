@@ -1,9 +1,9 @@
 // Registrar o Service Worker
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js').then(function (registration) {
-      console.log('Service Worker registrado com sucesso', registration);
-  }).catch(function (error) {
-      console.error('Falha ao registrar o Service Worker', error);
+  navigator.serviceWorker.register('/sw.js').then(function(registration) {
+    console.log('Service Worker registrado com sucesso', registration);
+  }).catch(function(error) {
+    console.error('Falha ao registrar o Service Worker', error);
   });
 }
 
@@ -23,15 +23,11 @@ let alarms = JSON.parse(localStorage.getItem('alarms')) || [];
 function setAlarm() {
   const alarmTime = document.getElementById('alarmTime').value;
   const message = document.getElementById('message').value;
-  const recurrence = document.getElementById('recurrence').value;
-  if (alarmTime && message && recurrence) {
-      const alarm = { time: alarmTime, message: message, recurrence: recurrence };
-      alarms.push(alarm);
-      localStorage.setItem('alarms', JSON.stringify(alarms));
-      addAlarmToList(alarm);
-      console.log(`Definindo alarme: ${alarm.time} - ${alarm.recurrence}`);
-  } else {
-      console.log('Faltando informações para definir o alarme');
+  if (alarmTime && message) {
+    const alarm = { time: alarmTime, message: message };
+    alarms.push(alarm);
+    localStorage.setItem('alarms', JSON.stringify(alarms));
+    addAlarmToList(alarm);
   }
 }
 
@@ -41,7 +37,7 @@ function addAlarmToList(alarm) {
   li.classList.add('alarm-item');
   const span = document.createElement('span');
   span.classList.add('message');
-  span.textContent = `Alarme: ${alarm.time} - Mensagem: ${alarm.message} - Recorrência: ${alarm.recurrence}`;
+  span.textContent = `Alarme: ${alarm.time} - Mensagem: ${alarm.message}`;
   const deleteIcon = document.createElement('i');
   deleteIcon.classList.add('fas', 'fa-trash', 'delete-button');
   deleteIcon.onclick = () => deleteAlarm(alarm, li);
@@ -61,44 +57,15 @@ function checkAlarms() {
   const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
   console.log(`Hora atual: ${currentTime}`); // Adiciona log para depuração
   alarms.forEach(alarm => {
-      console.log(`Verificando alarme: ${alarm.time}`); // Adiciona log para depuração
-      if (alarm.time === currentTime) {
-          sendPushNotification(alarm.message); // Envia notificação push
-          playAlarmSound();
-          showAlarmPopup(alarm.message);
-          handleRecurrence(alarm);
-      }
+    console.log(`Verificando alarme: ${alarm.time}`); // Adiciona log para depuração
+    if (alarm.time === currentTime) {
+      sendPushNotification(alarm.message); // Envia notificação push
+      playAlarmSound();
+      showAlarmPopup(alarm.message);
+      alarms = alarms.filter(a => a !== alarm);
+      localStorage.setItem('alarms', JSON.stringify(alarms));
+    }
   });
-}
-
-function handleRecurrence(alarm) {
-  const now = new Date();
-  let nextAlarmTime;
-  switch (alarm.recurrence) {
-      case 'daily':
-          nextAlarmTime = new Date(now.setDate(now.getDate() + 1));
-          break;
-      case 'weekly':
-          nextAlarmTime = new Date(now.setDate(now.getDate() + 7));
-          break;
-      case 'monthly':
-          nextAlarmTime = new Date(now.setMonth(now.getMonth() + 1));
-          break;
-      default:
-          alarms = alarms.filter(a => a !== alarm);
-  }
-  if (nextAlarmTime) {
-      alarm.time = `${String(nextAlarmTime.getHours()).padStart(2, '0')}:${String(nextAlarmTime.getMinutes()).padStart(2, '0')}`;
-      alarms.push(alarm);
-  }
-  localStorage.setItem('alarms', JSON.stringify(alarms));
-  updateAlarmsList();
-}
-
-function updateAlarmsList() {
-  const alarmsList = document.getElementById('alarmsList');
-  alarmsList.innerHTML = '';
-  alarms.forEach(addAlarmToList);
 }
 
 function playAlarmSound() {
@@ -108,14 +75,14 @@ function playAlarmSound() {
 }
 
 function sendPushNotification(message) {
-  navigator.serviceWorker.ready.then(function (registration) {
-      registration.showNotification('Alarme', {
-          body: message,
-          icon: 'icone.png',
-          vibrate: [200, 100, 200],
-          data: { url: window.location.href },
-          tag: 'alarm-notification'
-      });
+  navigator.serviceWorker.ready.then(function(registration) {
+    registration.showNotification('Alarme', {
+      body: message,
+      icon: 'icone.png',
+      vibrate: [200, 100, 200],
+      data: { url: window.location.href },
+      tag: 'alarm-notification'
+    });
   });
 }
 
@@ -129,7 +96,7 @@ function showAlarmPopup(message) {
 function stopAlarm() {
   const popup = document.getElementById('alarmPopup');
   popup.style.display = 'none';
-  stopAlarmSound();
+  stopAlarmSound(); // Adiciona função para parar o som
 }
 
 function stopAlarmSound() {
